@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>localStorage</title>
+		<style>
+			div{
+				border: 3px solid pink;
+				padding: 10px;
+				width: 300px;
+			}
+		</style>
+	</head>
+	<body>
+    	<p>Please, write your name:</p>
+    	<input type="text" name="a" id="firstName" placeholder="first  name" onkeyup="showCharsCount();" />
+		<input type="text" name="b" id="lastName" placeholder="last  name" /><br /><br />
+        <input type="button" value="Save my name" onclick="save();" />
+		<input type="button" value="Show last user" onclick="loadName();" />
+		<input type="button" value="Clear the saved user" onclick="clearName();" /><br /><br />
+        <div id="result"></div>
+        <span id="span_status"></span>
+        
+		 <script>
+		 	var result = document.getElementById("result");
+			var first = document.getElementById("firstName");
+			var last = document.getElementById("lastName");
+			
+			function showCharsCount(){
+				document.getElementById("span_status").innerHTML = 'Chars count: ' + document.getElementById("firstName").value.length;
+				autoSaveToStorage();
+			}
+			
+			function autoSaveToStorage(){
+				if(typeof(Storage) !== "undefined"){
+					localStorage.setItem("last_text", document.getElementById("firstName").value);
+					console.log("Saving To LocalStorage: " + document.getElementById("firstName").value);
+				} else {
+					alert('Sorry Your Browser not support Local Storage');
+				}
+			}
+		 	
+		 	function save(){
+			 	if (typeof(Storage) !== "undefined") {
+			 		if(first.value !== '' && last.value !== ''){
+			 			localStorage.myname = first.value + ' ' + last.value;
+						result.innerHTML = 'You saved the name: ' + localStorage.myname;
+						first.value = '';
+						last.value = '';
+			 		}else{
+			 			result.innerHTML = 'No data';
+			 		}
+				} else {
+	    			result.innerHTML = 'localStorage is not supported. Update your browser.';
+				}
+			}
+			function loadName(){	
+			 	if (typeof(Storage) !== "undefined") {
+					if(localStorage.myname && localStorage.myname !== ''){
+						result.innerHTML = 'Last saved name is ' + localStorage.myname;
+					}else{
+						result.innerHTML = 'We don\'t have previous user saved';
+					}
+				} else {
+	    			result.innerHTML = 'localStorage is not supported. Update your browser.';
+				}
+			}
+			function clearName(){	
+			 	if (typeof(Storage) !== "undefined") {
+					if ( localStorage.myname && localStorage.myname !== ''){
+						result.innerHTML = 'You deleted the saved name ' + localStorage.myname;
+						localStorage.removeItem("myname");
+					}else{
+						result.innerHTML = 'There is no saved name to be deleted';
+					}
+				} else {
+	    			result.innerHTML = 'localStorage is not supported. Update your browser.';
+				}
+			}
+
+		 </script>
+	</body>
+</html>
